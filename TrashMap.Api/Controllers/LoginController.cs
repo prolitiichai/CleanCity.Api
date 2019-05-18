@@ -26,22 +26,22 @@ namespace TrashMap.Api.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult Post([FromQuery] string login, [FromQuery] string password)
+		public IActionResult Post([FromQuery] string username, [FromQuery] string password)
 		{
 			//if (inputModel != null && inputModel.Username != null)
 			//	return Login(inputModel.Username, inputModel.Password);
-			return Login(login, password);
+			return Login(username, password);
 		}
 
 		[HttpGet]
-		public IActionResult Get([FromQuery] string login, [FromQuery] string password)
+		public IActionResult Get([FromQuery] string username, [FromQuery] string password)
 		{
-			return Login(login, password);
+			return Login(username, password);
 		}
 
-		private IActionResult Login(string login, string password)
+		private IActionResult Login(string username, string password)
 		{
-			var userData = _userManager.GetByNickName(login);
+			var userData = _userManager.GetByNickName(username);
 
 			if (userData == null || userData.PasswordSalt != password)// TODO AF: Support salt
 			{
@@ -50,7 +50,7 @@ namespace TrashMap.Api.Controllers
 
 			List<Claim> claims = new List<Claim>
 			{
-				new Claim(ClaimTypes.Name, login),
+				new Claim(ClaimTypes.Name, username),
 				new Claim(ClaimTypes.NameIdentifier, userData.Id.ToString())
 			};
 

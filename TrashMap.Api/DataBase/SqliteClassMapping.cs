@@ -21,5 +21,38 @@ namespace TrashMap.Api.DataBase
 			}
 		}
 
+		public class LikeEntityClassMapper : ClassMapper<LikeEntity>
+		{
+			public const string TableNameConst = "Likes";
+
+			public LikeEntityClassMapper()
+			{
+				TableName = TableNameConst;
+				Map(e => e.Id).Key(KeyType.Identity);
+				AutoMap();
+			}
+		}
+		public class PointCommentEntityClassMapper : ClassMapper<PointCommentEntity>
+		{
+			public const string TableNameConst = "PointComments";
+
+			public PointCommentEntityClassMapper()
+			{
+				TableName = TableNameConst;
+				Map(e => e.Id).Key(KeyType.Identity);
+				AutoMap();
+			}
+		}
+		public class PointEntityClassMapper : ClassMapper<PointEntity>
+		{
+			public const string TableNameConst = "Points";
+
+			public PointEntityClassMapper()
+			{
+				TableName = TableNameConst;
+				Map(e => e.Id).Key(KeyType.Identity);
+				AutoMap();
+			}
+		}
 	}
 }

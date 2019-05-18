@@ -107,7 +107,7 @@ namespace TrashMap.Api
 			}
 
 			app.UseAuthentication();
-			app.UseHttpsRedirection();
+			//app.UseHttpsRedirection();
 			app.UseMvc();
 		}
 	}

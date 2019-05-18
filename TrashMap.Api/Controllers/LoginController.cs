@@ -6,6 +6,7 @@ using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using TrashMap.Api.DataBase;
 using TrashMap.Api.Model;
@@ -25,13 +26,15 @@ namespace TrashMap.Api.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult Post([FromBody] RegistrationInputModel inputModel)
+		public IActionResult Post([FromQuery] string login, [FromQuery] string password)
 		{
-			return Login(inputModel.Username, inputModel.Password);
+			//if (inputModel != null && inputModel.Username != null)
+			//	return Login(inputModel.Username, inputModel.Password);
+			return Login(login, password);
 		}
 
-		[HttpPost]
-		public IActionResult PostBody(string login, string password)
+		[HttpGet]
+		public IActionResult Get([FromQuery] string login, [FromQuery] string password)
 		{
 			return Login(login, password);
 		}
@@ -48,11 +51,18 @@ namespace TrashMap.Api.Controllers
 			List<Claim> claims = new List<Claim>
 			{
 				new Claim(ClaimTypes.Name, login),
-				new Claim(ClaimTypes.Role, "user")
+				new Claim(ClaimTypes.NameIdentifier, userData.Id.ToString())
 			};
 
-			HttpContext.SignInAsync(new ClaimsPrincipal(new ClaimsIdentity(claims, "Cookies", "user", "role")));
-			
+			var identity = new ClaimsIdentity(claims, "Cookies");
+			identity.AddClaim(new Claim(ClaimTypes.Role, "user"));
+			var principal = new ClaimsPrincipal(identity);
+			HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, new AuthenticationProperties
+			{
+				IsPersistent = true,
+				ExpiresUtc = DateTime.UtcNow.AddYears(1)
+			}).Wait();
+
 			return StatusCode(200);
 		}
 	}

@@ -59,14 +59,16 @@ namespace TrashMap.Api
 				options.User.RequireUniqueEmail = false;
 			});
 
-			services.ConfigureApplicationCookie(options =>
+			services
+				.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+				.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
 			{
 				// Cookie settings
 				options.Cookie.HttpOnly = true;
 				options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 
-				options.LoginPath = "/login";
-				options.AccessDeniedPath = "/register";
+				options.LoginPath = "/api/login";
+				options.AccessDeniedPath = "/api/register";
 				options.SlidingExpiration = true;
 			});
 

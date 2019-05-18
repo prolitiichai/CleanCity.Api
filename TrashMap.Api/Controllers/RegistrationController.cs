@@ -13,7 +13,7 @@ using TrashMap.Api.Model;
 
 namespace TrashMap.Api.Controllers
 {
-	[Route("api/register")]
+	[Route("api/registration")]
 	[ApiController]
 	public class RegistrationController : ControllerBase
 	{

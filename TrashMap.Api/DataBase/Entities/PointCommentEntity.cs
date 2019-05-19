@@ -10,9 +10,11 @@ namespace TrashMap.Api.DataBase.Entities
 	{
 		public long Id { get; set; }
 		public long UserId { get; set; }
+		public long PointId { get; set; }
 		public string PhotoPath { get; set; }
 		public bool PointStatus { get; set; }
 		public int PlusCount { get; set; }
 		public int MinusCount { get; set; }
+		public long Created { get; set; }
 	}
 }

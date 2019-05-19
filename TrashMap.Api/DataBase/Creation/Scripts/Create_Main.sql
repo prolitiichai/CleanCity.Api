@@ -28,6 +28,7 @@ CREATE TABLE [PointComments] (
 	[PhotoPath] NVARCHAR(256),
 	[PointStatus] INTEGER,
 	[PlusCount] INTEGER,
+	[Created] INTEGER,
 	[MinusCount] INTEGER
 );
 
@@ -41,7 +42,7 @@ CREATE TABLE [Likes] (
 CREATE INDEX [idx_login] ON [Users]([Login]);
 
 CREATE INDEX [idx_point_user_id] ON [Points]([UserId]);
-CREATE INDEX [idx_point_search_dots] ON [Points]([IsFixed],[Latitude],[Longitude]);
+CREATE INDEX [idx_point_search_dots] ON [Points]([Updated],[Latitude],[Longitude], [IsFixed]);
 
 CREATE INDEX [idx_point_comments] ON [PointComments]([PointId]);
 CREATE INDEX [idx_user_comments] ON [PointComments]([UserId]);

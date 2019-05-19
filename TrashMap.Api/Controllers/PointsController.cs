@@ -45,6 +45,10 @@ namespace TrashMap.Api.Controllers
 				IsFixed = false,
 			});
 
+
+			userData.TrashFound += 1;
+			_userManager.Update(userData);
+
 			return StatusCode(200, result.Id);
 		}
 		

@@ -65,6 +65,16 @@ namespace TrashMap.Api.Controllers
 				pointData.IsFixed = pointComment.PointStatus;
 			}
 
+			if (pointData.IsFixed)
+			{
+				userData.TrashCleaned += 1;
+			}
+			else
+			{
+				userData.TrashFound += 1;
+			}
+			_userManager.Update(userData);
+
 			pointComment = _pointCommentEntityManager.AddOrUpdate(pointComment);
 
 			pointData.Updated = ((DateTimeOffset) DateTime.UtcNow).ToUnixTimeSeconds();
@@ -72,6 +82,19 @@ namespace TrashMap.Api.Controllers
 			return StatusCode(200, pointComment.Id);
 		}
 
+		[HttpGet("{id}/comments")]
+		public ActionResult GetComments(long id)
+		{
+			var userData =
+				_userManager.GetByNickName(
+					HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value);
+			if (userData == null) return StatusCode(400, "user not found");
+			var pointData = _pointManager.FindBy(id);
+
+			var result = _pointCommentEntityManager.GetPointComments(id);
+
+			return StatusCode(200, result);
+		}
 
 		public class CreatePointCommentDTO
 		{

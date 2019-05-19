@@ -17,8 +17,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using TrashMap.Api.DataBase;
 using TrashMap.Api.DataBase.Creation;
+using TrashMap.Api.DataBase.FileStorage;
 using TrashMap.Api.DataBase.Providers;
 using TrashMap.Api.DataBase.SqlWrapping;
+using TrashMap.Api.Formatters;
 using TrashMap.Api.Settings;
 
 namespace TrashMap.Api
@@ -72,7 +74,7 @@ namespace TrashMap.Api
 				options.SlidingExpiration = true;
 			});
 
-			var dbSettings = new DbSettings() { DataBasePath = "/db/main.db", Name = "main", Password = "" };
+			var dbSettings = new DbSettings() { DataBasePath = "db/main.db", Name = "main", Password = "" };
 			var creator = new SQLiteDBCreator(dbSettings, _logger);
 			if (!creator.DatabaseExists())
 			{
@@ -82,15 +84,22 @@ namespace TrashMap.Api
 			DapperExtensions.DapperExtensions.SqlDialect = new DapperExtensions.Sql.SqliteDialect();
 			var database = new Database(connectionHolder.CreateConnection(), new SqlGeneratorImpl(new DapperExtensionsConfiguration(typeof(AutoClassMapper<>), new[] { typeof(SqliteClassMapping).Assembly }, new SqliteDialect())));
 
+			services.AddSingleton<IFileStorage>(new FileStorage("db/images"));
 			services.AddSingleton<IDatabase>(database);
 			services.AddSingleton<IUserManager, UserManager>();
+			services.AddSingleton<IPointManager, PointManager>();
+			services.AddSingleton<IPointCommentEntityManager, PointCommentEntityManager>();
+			services.AddSingleton<ILikeManager, LikeManager>();
 
 			services.AddLogging(config =>
 			{
 				config.AddDebug();
 				config.AddConsole();
 			});
-			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+			services.AddMvc(options =>
+			{
+				options.InputFormatters.Insert(0, new BinaryInputFormatter());
+			}).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

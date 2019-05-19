@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TrashMap.Api.Controllers
 {
-	[Route("api/[controller]")]
-	[Authorize]
-	[ApiController]
+	//[Route("api/[controller]")]
+	//[Authorize]
+	//[ApiController]
 	public class ValuesController : ControllerBase
 	{
 		// GET api/values

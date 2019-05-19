@@ -68,6 +68,14 @@ namespace TrashMap.Api.Controllers
 			return StatusCode(200, result);
 		}
 
+		[HttpPost("findBySquare")]
+		public ActionResult GetPointsPost([FromBody] SquareCoords square)
+		{
+			var result = _pointManager.SearchPointsInSquare(square.LeftUpperLongitude, square.LeftUpperLatitude, square.RightLowerLongitude, square.RightLowerLatitude, 100);
+
+			return StatusCode(200, result);
+		}
+
 		[HttpGet("find")]
 		public ActionResult GetPoint()
 		{

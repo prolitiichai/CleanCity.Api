@@ -10,7 +10,7 @@ namespace TrashMap.Api.DataBase
 {
 	public class PointCommentEntityManager : IdManager<PointCommentEntity>, IPointCommentEntityManager
 	{
-		public PointCommentEntityManager(IDatabase db, string entityName, ILogger<PointCommentEntity> log) : base(db, entityName, log)
+		public PointCommentEntityManager(IDatabase db, ILogger<PointCommentEntity> log) : base(db, "pointCommentEntityManager", log)
 		{
 		}
 

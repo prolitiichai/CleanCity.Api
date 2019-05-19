@@ -10,13 +10,15 @@ namespace TrashMap.Api.DataBase
 {
 	public class PointManager : IdManager<PointEntity>, IPointManager
 	{
-		public PointManager(IDatabase db, string entityName, ILogger<PointEntity> log) : base(db, entityName, log)
+		public PointManager(IDatabase db, ILogger<PointEntity> log) : base(db, "Point", log)
 		{
 		}
 
 		public PointEntity[] SearchPointsInSquare(double leftUpperLongitude, double leftUpperLatitude, double rightLowerLongitude,
 			double rightLowerLatitude, int count = 100)
 		{
+			return database.GetList<PointEntity>().ToArray();
+
 			var predicatesList = new List<IPredicate>
 			{
 				Predicates.Field<PointEntity>(en => en.Latitude, Operator.Ge, leftUpperLatitude),

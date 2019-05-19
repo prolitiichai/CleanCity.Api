@@ -10,7 +10,7 @@ namespace TrashMap.Api.DataBase
 {
 	public class LikeManager : IdManager<LikeEntity>, ILikeManager
 	{
-		public LikeManager(IDatabase db, string entityName, ILogger<LikeEntity> log) : base(db, entityName, log)
+		public LikeManager(IDatabase db, ILogger<LikeEntity> log) : base(db, "like", log)
 		{
 		}
 	}

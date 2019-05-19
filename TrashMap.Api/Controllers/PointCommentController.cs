@@ -30,7 +30,7 @@ namespace TrashMap.Api.Controllers
 		}
 
 		[HttpPost("{id}/comment-photo")]
-		public ActionResult<string> PostPhoto([FromBody] byte[] file)
+		public ActionResult<string> PostPhoto(long id, [FromBody] byte[] file)
 		{
 			var userData =
 				_userManager.GetByNickName(
@@ -63,10 +63,12 @@ namespace TrashMap.Api.Controllers
 			if (pointData.IsFixed != pointComment.PointStatus)
 			{
 				pointData.IsFixed = pointComment.PointStatus;
-				_pointManager.Update(pointData);
 			}
 
 			pointComment = _pointCommentEntityManager.AddOrUpdate(pointComment);
+
+			pointData.Updated = ((DateTimeOffset) DateTime.UtcNow).ToUnixTimeSeconds();
+			_pointManager.Update(pointData);
 			return StatusCode(200, pointComment.Id);
 		}
 

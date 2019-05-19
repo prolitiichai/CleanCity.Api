@@ -56,16 +56,16 @@ namespace TrashMap.Api.Controllers
 			return StatusCode(200, result);
 		}
 
-		[HttpGet("find/{leftUpperLatitude)/{leftUpperLongitude}/{rightLowerLatitude}/{rightLowerLongitude}")]
-		public ActionResult GetPoint(double leftUpperLatitude, double leftUpperLongitude, double rightLowerLatitude, double rightLowerLongitude)
+		[HttpGet("findBySquare")]
+		public ActionResult GetPoint(SquareCoords square)
 		{
-			var result = _pointManager.SearchPointsInSquare(leftUpperLongitude, leftUpperLatitude, rightLowerLongitude, rightLowerLatitude, 100);
+			var result = _pointManager.SearchPointsInSquare(square.LeftUpperLongitude, square.LeftUpperLatitude, square.RightLowerLongitude, square.RightLowerLatitude, 100);
 
 			return StatusCode(200, result);
 		}
 
-		[HttpGet("find/{username}")]
-		public ActionResult GetPoint(string username)
+		[HttpGet("find")]
+		public ActionResult GetPoint()
 		{
 			var userData =
 				_userManager.GetByNickName(
@@ -75,6 +75,14 @@ namespace TrashMap.Api.Controllers
 			var result = _pointManager.SearchPointsByUser(userData.Id);
 
 			return StatusCode(200, result);
+		}
+
+		public class SquareCoords
+		{
+			public double LeftUpperLatitude { get; set; }
+			public double LeftUpperLongitude { get; set; }
+			public double RightLowerLatitude { get; set; }
+			public double RightLowerLongitude { get; set; }
 		}
 
 		public class PointCreationDTO
